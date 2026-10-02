@@ -1,103 +1,946 @@
 <!DOCTYPE html>
-<html lang="ar" dir="rtl">
-
+<html lang="ar" dir="rtl" class="scroll-smooth">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>الرئيسية - المدرسة</title>
-    <link rel="stylesheet" href="style.css">
+    <title>مدرسة الرصيفة الثانوية المهنية الشاملة للبنين - BTEC</title>
+    <!-- Tailwind CSS -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <!-- Cairo Font -->
+    <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@300;400;600;700;800;900&display=swap" rel="stylesheet">
+    <!-- FontAwesome Icons -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <!-- AOS Animate on Scroll Library -->
+    <link href="https://unpkg.com/aos@2.3.1/dist/aos.css" rel="stylesheet">
+    
+    <script>
+        tailwind.config = {
+            darkMode: 'class',
+            theme: {
+                extend: {
+                    colors: {
+                        brand: {
+                            dark: '#070a12',
+                            card: '#0f172a',
+                            accent: '#38bdf8',
+                            orange: '#f97316',
+                            gold: '#fbbf24'
+                        }
+                    },
+                    fontFamily: {
+                        cairo: ['Cairo', 'sans-serif']
+                    }
+                }
+            }
+        }
+    </script>
+    
+    <style>
+        body {
+            font-family: 'Cairo', sans-serif;
+            background-color: #070a12;
+            color: #f1f5f9;
+            cursor: default;
+        }
+        
+        /* Custom Cybersecurity Cursor */
+        .cyber-cursor {
+            pointer-events: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            z-index: 9999;
+            transform: translate(-50%, -50%);
+            transition: width 0.2s, height 0.2s, border-color 0.2s;
+        }
+        .cyber-cursor-dot {
+            width: 8px;
+            height: 8px;
+            background-color: #38bdf8;
+            border-radius: 50%;
+            position: fixed;
+            pointer-events: none;
+            z-index: 10000;
+            transform: translate(-50%, -50%);
+            box-shadow: 0 0 10px #38bdf8, 0 0 20px #38bdf8;
+        }
+        .cyber-cursor-ring {
+            width: 32px;
+            height: 32px;
+            border: 2px dashed rgba(56, 189, 248, 0.6);
+            border-radius: 50%;
+            position: fixed;
+            pointer-events: none;
+            z-index: 9999;
+            transform: translate(-50%, -50%);
+            animation: spin-slow 8s linear infinite;
+        }
+        @keyframes spin-slow {
+            0% { transform: translate(-50%, -50%) rotate(0deg); }
+            100% { transform: translate(-50%, -50%) rotate(360deg); }
+        }
+        /* Hide default cursor on desktop for better effect */
+        @media (min-width: 768px) {
+            body, a, button, input, select, textarea {
+                cursor: none !important;
+            }
+        }
+        ::selection { background-color: #2563eb !important; color: #ffffff !important; }
+        
+        @keyframes bounce-subtle {
+            0%, 100% { transform: translateY(0); }
+            50% { transform: translateY(-8px); }
+        }
+        .animate-bounce-subtle { animation: bounce-subtle 2.5s infinite ease-in-out; }
+        .glass-card {
+            background: rgba(15, 23, 42, 0.75);
+            backdrop-filter: blur(12px);
+            border: 1px solid rgba(255, 255, 255, 0.08);
+        }
+        .glow-orange { box-shadow: 0 0 25px rgba(249, 115, 22, 0.25); }
+    </style>
 </head>
-
-<body>
-
-<header>
-
-    <div class="logo">
-        <div class="logo-icon"></div>
-        <h2>مدرسة الرصيفة المهنية الثانوية</h2>
+<body class="bg-[#070a12] text-slate-100 antialiased selection:bg-blue-600 selection:text-white" onload="loadPortfolios()">
+    <!-- Custom Cybersecurity Cursors -->
+    <div id="cursor-dot" class="cyber-cursor-dot hidden md:block"></div>
+    <div id="cursor-ring" class="cyber-cursor-ring hidden md:block"></div>
+    <!-- Live Announcements Ticker -->
+    <div class="bg-amber-500 text-slate-950 font-bold text-xs py-2 px-4 overflow-hidden whitespace-nowrap relative z-50">
+        <div class="inline-block animate-[marquee_20s_linear_infinite]">
+            <span class="mx-4"><i class="fa-solid fa-bullhorn"></i> تنبيه هام: يرجى من طلاب نظام BTEC (المستوى الثالث) تسليم ملفات الإنجاز (Portfolios) في موعد أقصاه الخميس القادم.</span>
+            <span class="mx-4"><i class="fa-solid fa-star"></i> مبروك لطلاب تخصص التكنولوجيا على إنجاز مشاريع البرمجة الذكية.</span>
+        </div>
     </div>
+    <!-- Navbar -->
+    <nav class="sticky top-0 z-40 glass-card border-b border-slate-800/80 px-4 py-3">
+        <div class="max-w-7xl mx-auto flex items-center justify-between">
+            <div class="flex items-center gap-3">
+                <div class="h-12 w-12 rounded bg-amber-500/20 border border-amber-500/30 flex items-center justify-center text-amber-400 font-bold text-lg">
+                    <i class="fa-solid fa-school"></i>
+                </div>
+                <div>
+                    <h1 class="font-bold text-sm md:text-base text-white leading-tight">مدرسة الرصيفة الثانوية المهنية الشاملة للبنين</h1>
+                    <p class="text-[11px] text-amber-400 font-semibold">مديرية التربية والتعليم للواء الرصيفة - BTEC</p>
+                </div>
+            </div>
+            
+            <!-- Desktop Links -->
+            <div class="hidden xl:flex items-center gap-5 text-xs font-semibold">
+                <a href="#about-btec" class="hover:text-amber-400 transition">عن BTEC</a>
+                <a href="#specializations" class="hover:text-amber-400 transition">التخصصات</a>
+                <a href="#calculator" class="hover:text-amber-400 transition">حساب المعدل</a>
+                <a href="#portfolios" class="hover:text-amber-400 transition">ملفات الإنجاز</a>
+                <a href="#resources" class="hover:text-amber-400 transition">بنك الموارد</a>
+                <a href="#workshops" class="hover:text-amber-400 transition">الورش العملية</a>
+                <a href="#success-stories" class="hover:text-amber-400 transition">قصص النجاح</a>
+                <a href="#teachers" class="hover:text-amber-400 transition">الكادر</a>
+                <a href="#contact" class="hover:text-amber-400 transition">التواصل</a>
+            </div>
+            
+            <div class="flex items-center gap-3">
+                <a href="#calculator" class="hidden sm:flex bg-gradient-to-r from-orange-500 to-amber-500 hover:from-orange-600 text-white px-3 py-2 rounded-xl text-xs font-bold transition items-center gap-2 shadow-lg">
+                    <i class="fa-solid fa-calculator"></i> حاسبة المعدل
+                </a>
+                
+                <!-- Mobile Menu Button (السهم الصغير / القائمة) -->
+                <button onclick="toggleMobileMenu()" class="xl:hidden bg-slate-800 hover:bg-slate-700 text-amber-400 border border-slate-700 p-2.5 rounded-xl text-sm transition flex items-center gap-1.5 font-bold">
+                    <span>القائمة</span>
+                    <i id="menu-icon" class="fa-solid fa-chevron-down transition-transform duration-300"></i>
+                </button>
+            </div>
+        </div>
 
-    <nav>
-        <a class="active" href="index.html">الرئيسية</a>
-        <a href="about.html">عن المدرسة</a>
-        <a href="archive.html">ارشيف المهمات السابقة</a>
-        <a href="teachers.html">الكادر التعليمي</a>
-        <a href="specialties.html">التخصصات</a>
-        <a href="gallery.html">معرض الصور</a>
-        <a href="contact.html">اتصل بنا</a>
-       <a href="login.html">تسجيل الدخول</a>
-
+        <!-- Mobile Dropdown Menu -->
+        <div id="mobile-menu" class="hidden xl:hidden mt-3 pt-3 border-t border-slate-800 grid grid-cols-2 sm:grid-cols-3 gap-2 text-xs font-semibold">
+            <a href="#about-btec" onclick="toggleMobileMenu()" class="bg-slate-900/80 hover:bg-slate-800 p-2.5 rounded-lg text-center transition text-slate-300 hover:text-amber-400">عن BTEC</a>
+            <a href="#specializations" onclick="toggleMobileMenu()" class="bg-slate-900/80 hover:bg-slate-800 p-2.5 rounded-lg text-center transition text-slate-300 hover:text-amber-400">التخصصات</a>
+            <a href="#calculator" onclick="toggleMobileMenu()" class="bg-slate-900/80 hover:bg-slate-800 p-2.5 rounded-lg text-center transition text-slate-300 hover:text-amber-400">حساب المعدل</a>
+            <a href="#portfolios" onclick="toggleMobileMenu()" class="bg-slate-900/80 hover:bg-slate-800 p-2.5 rounded-lg text-center transition text-slate-300 hover:text-amber-400">ملفات الإنجاز</a>
+            <a href="#resources" onclick="toggleMobileMenu()" class="bg-slate-900/80 hover:bg-slate-800 p-2.5 rounded-lg text-center transition text-slate-300 hover:text-amber-400">بنك الموارد</a>
+            <a href="#workshops" onclick="toggleMobileMenu()" class="bg-slate-900/80 hover:bg-slate-800 p-2.5 rounded-lg text-center transition text-slate-300 hover:text-amber-400">الورش العملية</a>
+            <a href="#success-stories" onclick="toggleMobileMenu()" class="bg-slate-900/80 hover:bg-slate-800 p-2.5 rounded-lg text-center transition text-slate-300 hover:text-amber-400">قصص النجاح</a>
+            <a href="#teachers" onclick="toggleMobileMenu()" class="bg-slate-900/80 hover:bg-slate-800 p-2.5 rounded-lg text-center transition text-slate-300 hover:text-amber-400">الكادر</a>
+            <a href="#contact" onclick="toggleMobileMenu()" class="bg-slate-900/80 hover:bg-slate-800 p-2.5 rounded-lg text-center transition text-slate-300 hover:text-amber-400">التواصل</a>
+        </div>
     </nav>
 
-</header>
+    <!-- Hero Section -->
+    <section class="relative py-14 px-4 overflow-hidden border-b border-slate-800">
+        <div class="max-w-7xl mx-auto grid grid-cols-1 lg:grid-cols-2 gap-12 items-center relative z-10" data-aos="fade-up" data-aos-duration="1000">
+            <div>
+                <span class="inline-flex items-center gap-2 px-3 py-1 rounded-full text-xs font-bold bg-amber-500/10 text-amber-400 border border-amber-500/30 mb-4">
+                    <i class="fa-solid fa-award"></i> التعليم المهني التطبيقي الأول بالرصيفة
+                </span>
+                <h2 class="text-3xl md:text-5xl font-extrabold text-white leading-[1.6] mb-6">
+                    بناء المستقبل المهني والتقني <br class="hidden sm:inline">
+                    <span class="inline-block mt-2 text-transparent bg-clip-text bg-gradient-to-r from-amber-400 to-orange-500">بنظام BTEC العالمي</span>
+                </h2>
+                <p class="text-slate-300 text-sm md:text-base leading-relaxed mb-8">
+                    مدرسة الرصيفة الثانوية المهنية الشاملة للبنين تعتمد أفضل المناهج التطبيقية العالمية. نركز على المهارات الميدانية والعملية بنسبة تتجاوز 70%، لتجهيز الطلاب لسوق العمل والقبول الجامعي.
+                </p>
+                <div class="grid grid-cols-3 gap-3 mb-8">
+                    <div class="glass-card p-3 rounded-xl border border-slate-800 text-center">
+                        <span class="block text-xl md:text-2xl font-black text-amber-400">5</span>
+                        <span class="text-[11px] text-slate-400">تخصصات رئيسية</span>
+                    </div>
+                    <div class="glass-card p-3 rounded-xl border border-slate-800 text-center">
+                        <span class="block text-xl md:text-2xl font-black text-sky-400">70%+</span>
+                        <span class="text-[11px] text-slate-400">تدريب عملي</span>
+                    </div>
+                    <div class="glass-card p-3 rounded-xl border border-slate-800 text-center">
+                        <span class="block text-xl md:text-2xl font-black text-emerald-400">100%</span>
+                        <span class="text-[11px] text-slate-400">كادر متخصص</span>
+                    </div>
+                </div>
+                <div class="flex flex-wrap gap-4">
+                    <a href="#specializations" class="bg-amber-500 hover:bg-amber-600 text-slate-950 font-extrabold px-6 py-3 rounded-xl text-xs transition flex items-center gap-2">
+                        استكشف التخصصات <i class="fa-solid fa-arrow-left"></i>
+                    </a>
+                    <a href="#resources" class="bg-slate-800 hover:bg-slate-700 text-white font-bold px-6 py-3 rounded-xl text-xs transition border border-slate-700">
+                        بنك الموارد والملخصات
+                    </a>
+                </div>
+            </div>
+            <div class="flex flex-col gap-5">
+                <div class="glass-card p-8 rounded-2xl border border-slate-700/60 shadow-2xl glow-orange text-center flex flex-col items-center justify-center min-h-[250px]">
+                    <i class="fa-solid fa-graduation-cap text-6xl text-amber-400 mb-4 animate-bounce-subtle"></i>
+                    <h3 class="text-xl font-bold text-white mb-2">الرؤية والتميز المهني</h3>
+                    <p class="text-xs text-slate-300 leading-relaxed">تخريج جيل تقني واعد يمتلك المهارات العملية المطلوبة في سوق العمل الحديث.</p>
+                </div>
+                <div class="glass-card p-5 rounded-2xl border border-slate-700 shadow-xl">
+                    <p class="text-xs font-bold text-amber-400 mb-1 flex items-center gap-2">
+                        <i class="fa-solid fa-quote-right"></i> الرؤية المعتمدة
+                    </p>
+                    <p class="text-xs text-slate-300 leading-relaxed">
+                        مظلة واحدة لمنظومة تعليمية أكثر تكاملاً وكفاءة لخدمة أبنائنا الطلبة في مدرسة الرصيفة الثانوية المهنية للبنين.
+                    </p>
+                </div>
+            </div>
+        </div>
+    </section>
 
+    <!-- Section 1: About BTEC System -->
+    <section id="about-btec" class="py-14 px-4 bg-slate-900/40 border-b border-slate-800" data-aos="fade-up">
+        <div class="max-w-7xl mx-auto">
+            <div class="text-center max-w-3xl mx-auto mb-12">
+                <h2 class="text-2xl md:text-4xl font-extrabold text-white mb-4">ما هو نظام BTEC وكيف يحسب معدل التوجيهي؟</h2>
+                <p class="text-slate-400 text-sm">نظام BTEC هو نظام مهني تطبيقي دولي يعتمد على المشاريع والتقييم المستمر.</p>
+            </div>
+            <div class="grid grid-cols-1 md:grid-cols-3 gap-6 mb-8">
+                <div class="glass-card p-6 rounded-2xl border border-slate-800" data-aos="fade-up" data-aos-delay="100">
+                    <div class="w-10 h-10 rounded-xl bg-slate-800 text-slate-300 flex items-center justify-center font-bold mb-3">10</div>
+                    <h3 class="text-base font-bold text-white mb-1">الصف العاشر (Level 2)</h3>
+                    <span class="inline-block px-2.5 py-0.5 rounded-full text-[11px] font-bold bg-slate-800 text-slate-400 mb-2">الوزن: 0%</span>
+                    <p class="text-xs text-slate-400">سنة تأسيسية هامة لا تدخل في معدل التوجيهي، يتم التدريب فيها على مهارات الورش.</p>
+                </div>
+                <div class="glass-card p-6 rounded-2xl border border-amber-500/30" data-aos="fade-up" data-aos-delay="200">
+                    <div class="w-10 h-10 rounded-xl bg-amber-500/20 text-amber-400 flex items-center justify-center font-bold mb-3">11</div>
+                    <h3 class="text-base font-bold text-white mb-1">السنة الأولى (أول ثانوي BTEC)</h3>
+                    <span class="inline-block px-2.5 py-0.5 rounded-full text-[11px] font-bold bg-amber-500/20 text-amber-400 mb-2">الوزن بالمعدل: 35%</span>
+                    <p class="text-xs text-slate-300">يُحتسب 35% من المعدل النهائي بناءً على تقييم الواجبات والمشاريع العملية.</p>
+                </div>
+                <div class="glass-card p-6 rounded-2xl border border-orange-500/40 glow-orange" data-aos="fade-up" data-aos-delay="300">
+                    <div class="w-10 h-10 rounded-xl bg-orange-500/20 text-orange-400 flex items-center justify-center font-bold mb-3">12</div>
+                    <h3 class="text-base font-bold text-white mb-1">السنة الثانية (توجيهي BTEC)</h3>
+                    <span class="inline-block px-2.5 py-0.5 rounded-full text-[11px] font-bold bg-orange-500/20 text-orange-400 mb-2">الوزن بالمعدل: 35%</span>
+                    <p class="text-xs text-slate-300">مشاريع المستوى الثالث وتدريب عملي مكثف للحصول على 35% إضافية.</p>
+                </div>
+            </div>
+        </div>
+    </section>
 
-<section class="hero">
+    <!-- FEATURED: Student Portfolios with Live Link Submission -->
+    <section id="portfolios" class="py-14 px-4 border-b border-slate-800" data-aos="fade-up">
+        <div class="max-w-6xl mx-auto">
+            <div class="text-center max-w-2xl mx-auto mb-10">
+                <span class="text-sky-400 text-xs font-bold uppercase tracking-wider">ملفات إنجاز الطلاب الإلكترونية</span>
+                <h2 class="text-2xl md:text-3xl font-black text-white mt-1 mb-3">توثيق ومشاركة مشاريع طلاب BTEC</h2>
+                <p class="text-slate-400 text-xs">أدخل بياناتك ورابط مشروعك (Google Drive أو GitHub). سيظهر المشروع فوراً في السجل أدناه.</p>
+            </div>
+            <div class="grid grid-cols-1 lg:grid-cols-3 gap-8">
+                <!-- Submit Form -->
+                <form id="portfolio-form" onsubmit="submitPortfolio(event)" class="glass-card p-6 rounded-2xl border border-sky-500/30 space-y-4 lg:col-span-1">
+                    <h3 class="font-bold text-white text-sm flex items-center gap-2"><i class="fa-solid fa-link text-sky-400"></i> إضافة رابط مشروع جديد</h3>
+                    <div>
+                        <label class="block text-xs font-semibold text-slate-400 mb-1">اسم الطالب الثلاثي</label>
+                        <input type="text" id="p-name" placeholder="مثال: أحمد محمد خالد" required class="w-full bg-slate-950 border border-slate-800 rounded-xl px-3 py-2 text-xs text-white outline-none focus:border-sky-500">
+                    </div>
+                    <div>
+                        <label class="block text-xs font-semibold text-slate-400 mb-1">التخصص المهني</label>
+                        <select id="p-spec" class="w-full bg-slate-950 border border-slate-800 rounded-xl px-3 py-2 text-xs text-white outline-none focus:border-sky-500">
+                            <option>تكنولوجيا المعلومات (IT)</option>
+                            <option>الهندسة وتكنولوجيا المركبات</option>
+                            <option>البناء والإنشاءات</option>
+                            <option>الفندقة والضيافة</option>
+                            <option>السياحة والسفر</option>
+                        </select>
+                    </div>
+                    <div>
+                        <label class="block text-xs font-semibold text-slate-400 mb-1">عنوان المشروع أو الورشة</label>
+                        <input type="text" id="p-title" placeholder="مثال: تطبيق ويب أو صيانة محرك" required class="w-full bg-slate-950 border border-slate-800 rounded-xl px-3 py-2 text-xs text-white outline-none focus:border-sky-500">
+                    </div>
+                    <div>
+                        <label class="block text-xs font-semibold text-slate-400 mb-1">رابط المشروع (Google Drive / GitHub)</label>
+                        <input type="url" id="p-link" placeholder="https://drive.google.com/..." required class="w-full bg-slate-950 border border-slate-800 rounded-xl px-3 py-2 text-xs text-white outline-none focus:border-sky-500">
+                    </div>
+                    <button type="submit" class="w-full bg-sky-500 hover:bg-sky-600 text-slate-950 font-extrabold py-2.5 rounded-xl text-xs transition">إرسال ونشر المشروع</button>
+                </form>
+                <!-- Display Dynamic Portfolios -->
+                <div class="glass-card p-6 rounded-2xl border border-slate-800 lg:col-span-2">
+                    <div class="flex items-center justify-between mb-4">
+                        <h3 class="font-bold text-white text-sm flex items-center gap-2"><i class="fa-solid fa-list-check text-amber-400"></i> سجل مشاريع الطلاب المعتمدة</h3>
+                        <span class="text-[10px] text-slate-400 bg-slate-900 px-2.5 py-1 rounded-full border border-slate-800">تحديث مباشر</span>
+                    </div>
+                    <div id="portfolios-list" class="space-y-3 text-xs">
+                        <!-- Dynamic items will load here -->
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
 
-    <div class="hero-content">
+    <!-- Section 2: Specializations (Clickable Cards with Popups) -->
+    <section id="specializations" class="py-14 px-4 bg-slate-900/40 border-b border-slate-800" data-aos="fade-up">
+        <div class="max-w-7xl mx-auto">
+            <div class="text-center max-w-3xl mx-auto mb-12">
+                <span class="text-amber-400 text-xs font-bold uppercase">تخصصات BTEC المعتمدة</span>
+                <h2 class="text-3xl font-black text-white mt-2 mb-3">التخصصات المهنية الخمسة بالمدرسة</h2>
+                <p class="text-slate-400 text-xs">اضغط على أي تخصص أدناه لعرض الشرح التفصيلي، المواد الدراسية، وفرص العمل المستقبلية.</p>
+            </div>
+            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+                <!-- IT Specialization Card -->
+                <div onclick="openSpecializationModal('it')" class="glass-card p-6 rounded-2xl border border-slate-800 hover:border-sky-500/50 transition cursor-pointer group hover:-translate-y-1.5 duration-300" data-aos="fade-up" data-aos-delay="100">
+                    <div class="w-10 h-10 rounded-xl bg-sky-500/10 text-sky-400 flex items-center justify-center text-lg font-bold mb-3 group-hover:scale-110 transition"><i class="fa-solid fa-laptop-code"></i></div>
+                    <h3 class="text-lg font-bold text-white mb-2">تكنولوجيا المعلومات (IT)</h3>
+                    <p class="text-xs text-slate-300 leading-relaxed mb-4">البرمجة، شبكات الحاسوب، دعم الأنظمة، وإدارة أمن المعلومات في مختبرات المدرسة المجهزة.</p>
+                    <span class="text-[11px] text-sky-400 font-bold flex items-center gap-1">عرض الشرح التفصيلي <i class="fa-solid fa-arrow-left"></i></span>
+                </div>
+                <!-- Vehicles Specialization Card -->
+                <div onclick="openSpecializationModal('vehicles')" class="glass-card p-6 rounded-2xl border border-slate-800 hover:border-amber-500/50 transition cursor-pointer group hover:-translate-y-1.5 duration-300" data-aos="fade-up" data-aos-delay="200">
+                    <div class="w-10 h-10 rounded-xl bg-amber-500/10 text-amber-400 flex items-center justify-center text-lg font-bold mb-3 group-hover:scale-110 transition"><i class="fa-solid fa-car-battery"></i></div>
+                    <h3 class="text-lg font-bold text-white mb-2">الهندسة وتكنولوجيا المركبات</h3>
+                    <p class="text-xs text-slate-300 leading-relaxed mb-4">كهرباء السيارات والمركبات الحديثة والهجينة وفحص الأعطال البرمجية والكهربائية بالورشة.</p>
+                    <span class="text-[11px] text-amber-400 font-bold flex items-center gap-1">عرض الشرح التفصيلي <i class="fa-solid fa-arrow-left"></i></span>
+                </div>
+                <!-- Construction Specialization Card -->
+                <div onclick="openSpecializationModal('construction')" class="glass-card p-6 rounded-2xl border border-slate-800 hover:border-orange-500/50 transition cursor-pointer group hover:-translate-y-1.5 duration-300" data-aos="fade-up" data-aos-delay="300">
+                    <div class="w-10 h-10 rounded-xl bg-orange-500/10 text-orange-400 flex items-center justify-center text-lg font-bold mb-3 group-hover:scale-110 transition"><i class="fa-solid fa-helmet-safety"></i></div>
+                    <h3 class="text-lg font-bold text-white mb-2">البناء والإنشاءات</h3>
+                    <p class="text-xs text-slate-300 leading-relaxed mb-4">الرسم الهندسي والمعماري، مسح الأراضي، حساب الكميات، ومراقبة الجودة في مواقع الإنشاءات.</p>
+                    <span class="text-[11px] text-orange-400 font-bold flex items-center gap-1">عرض الشرح التفصيلي <i class="fa-solid fa-arrow-left"></i></span>
+                </div>
+                <!-- Hospitality Specialization Card -->
+                <div onclick="openSpecializationModal('hospitality')" class="glass-card p-6 rounded-2xl border border-slate-800 hover:border-emerald-500/50 transition cursor-pointer group hover:-translate-y-1.5 duration-300" data-aos="fade-up" data-aos-delay="400">
+                    <div class="w-10 h-10 rounded-xl bg-emerald-500/10 text-emerald-400 flex items-center justify-center text-lg font-bold mb-3 group-hover:scale-110 transition"><i class="fa-solid fa-utensils"></i></div>
+                    <h3 class="text-lg font-bold text-white mb-2">الفندقة والضيافة</h3>
+                    <p class="text-xs text-slate-300 leading-relaxed mb-4">إعداد الطعام وإدارة المطبخ، خدمات الطعام والشراب، وإدارة المكاتب الأمامية بالفنادق والمطاعم.</p>
+                    <span class="text-[11px] text-emerald-400 font-bold flex items-center gap-1">عرض الشرح التفصيلي <i class="fa-solid fa-arrow-left"></i></span>
+                </div>
+                <!-- Tourism Specialization Card -->
+                <div onclick="openSpecializationModal('tourism')" class="glass-card p-6 rounded-2xl border border-slate-800 hover:border-purple-500/50 transition cursor-pointer group hover:-translate-y-1.5 duration-300" data-aos="fade-up" data-aos-delay="500">
+                    <div class="w-10 h-10 rounded-xl bg-purple-500/10 text-purple-400 flex items-center justify-center text-lg font-bold mb-3 group-hover:scale-110 transition"><i class="fa-solid fa-plane-departure"></i></div>
+                    <h3 class="text-lg font-bold text-white mb-2">السياحة والسفر</h3>
+                    <p class="text-xs text-slate-300 leading-relaxed mb-4">تخطيط البرامج السياحية، خدمة العملاء وحجوزات الطيران، الإرشاد السياحي وتنظيم الفعاليات.</p>
+                    <span class="text-[11px] text-purple-400 font-bold flex items-center gap-1">عرض الشرح التفصيلي <i class="fa-solid fa-arrow-left"></i></span>
+                </div>
+            </div>
+        </div>
+    </section>
 
-        <h1>اهلا بكم في مدرسة الرصيفة المهنية </h1>
-
+    <!-- Specialization Detailed Modal Popup -->
+    <div id="spec-modal" class="fixed inset-0 z-50 flex items-center justify-center bg-black/80 backdrop-blur-sm hidden px-4">
+        <div class="glass-card max-w-2xl w-full p-6 md:p-8 rounded-3xl border border-amber-500/40 relative shadow-2xl">
+            <button onclick="closeSpecializationModal()" class="absolute top-4 left-4 text-slate-400 hover:text-white bg-slate-900 w-8 h-8 rounded-full flex items-center justify-center border border-slate-800">
+                <i class="fa-solid fa-xmark text-base"></i>
+            </button>
+            <div id="modal-content" class="space-y-4 text-xs md:text-sm text-slate-300"></div>
+            <div class="mt-6 pt-4 border-t border-slate-800 flex justify-end">
+                <button onclick="closeSpecializationModal()" class="bg-amber-500 hover:bg-amber-600 text-slate-950 font-bold px-5 py-2 rounded-xl text-xs transition">إغلاق النافذة</button>
+            </div>
+        </div>
     </div>
 
-</section>
+    <!-- Resource Bank -->
+    <section id="resources" class="py-14 px-4 border-b border-slate-800" data-aos="fade-up">
+        <div class="max-w-7xl mx-auto">
+            <div class="text-center max-w-2xl mx-auto mb-10">
+                <span class="text-amber-400 text-xs font-bold uppercase">بنك الموارد والملخصات</span>
+                <h2 class="text-2xl md:text-3xl font-black text-white mt-1 mb-3">الخطط الدراسية ونماذج الامتحانات المعتمدة</h2>
+                <p class="text-slate-400 text-xs">حمل الملفات والخطط التدريبية والملخصات الخاصة بمناهج BTEC المواد المشتركة.</p>
+            </div>
+            <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
+                <div class="glass-card p-5 rounded-2xl border border-slate-800 text-center" data-aos="fade-up" data-aos-delay="100">
+                    <i class="fa-solid fa-file-pdf text-3xl text-red-400 mb-3"></i>
+                    <h3 class="font-bold text-white text-sm mb-1">دليل وحدات تكنولوجيا المعلومات</h3>
+                    <p class="text-[11px] text-slate-400 mb-4">ملخص لجميع وحدات المستوى الثالث IT</p>
+                    <button onclick="alert('جاري تحميل الملف المعتمد...')" class="w-full bg-slate-800 hover:bg-slate-700 text-amber-400 font-bold py-2 rounded-xl text-xs transition border border-amber-500/20">تحميل الملف (PDF)</button>
+                </div>
+                <div class="glass-card p-5 rounded-2xl border border-slate-800 text-center" data-aos="fade-up" data-aos-delay="200">
+                    <i class="fa-solid fa-file-lines text-3xl text-sky-400 mb-3"></i>
+                    <h3 class="font-bold text-white text-sm mb-1">نماذج امتحانات المواد المشتركة</h3>
+                    <p class="text-[11px] text-slate-400 mb-4">اللغة العربية والإنجليزية والتاريخ والإسلامية</p>
+                    <button onclick="alert('جاري تحميل بنك الأسئلة الوزارية...')" class="w-full bg-slate-800 hover:bg-slate-700 text-sky-400 font-bold py-2 rounded-xl text-xs transition border border-sky-500/20">تحميل النماذج</button>
+                </div>
+                <div class="glass-card p-5 rounded-2xl border border-slate-800 text-center" data-aos="fade-up" data-aos-delay="300">
+                    <i class="fa-solid fa-screwdriver-wrench text-3xl text-amber-400 mb-3"></i>
+                    <h3 class="font-bold text-white text-sm mb-1">دليل السلامة المهنية بالورش</h3>
+                    <p class="text-[11px] text-slate-400 mb-4">تعليمات الأمن والسلامة في الورش الهندسية</p>
+                    <button onclick="alert('جاري تحميل دليل السلامة...')" class="w-full bg-slate-800 hover:bg-slate-700 text-amber-400 font-bold py-2 rounded-xl text-xs transition border border-amber-500/20">تحميل الدليل</button>
+                </div>
+                <div class="glass-card p-5 rounded-2xl border border-slate-800 text-center" data-aos="fade-up" data-aos-delay="400">
+                    <i class="fa-solid fa-book-open text-3xl text-emerald-400 mb-3"></i>
+                    <h3 class="font-bold text-white text-sm mb-1">الخطة التدريبية للفندقة والسياحة</h3>
+                    <p class="text-[11px] text-slate-400 mb-4">توزيع الورش والمهام التطبيقية للفصل الحالي</p>
+                    <button onclick="alert('جاري تحميل الخطة التدريبية...')" class="w-full bg-slate-800 hover:bg-slate-700 text-emerald-400 font-bold py-2 rounded-xl text-xs transition border border-emerald-500/20">تحميل الخطة</button>
+                </div>
+            </div>
+        </div>
+    </section>
 
+    <!-- Practical Schedule -->
+    <section id="workshops" class="py-14 px-4 bg-slate-900/40 border-b border-slate-800" data-aos="fade-up">
+        <div class="max-w-5xl mx-auto">
+            <div class="text-center max-w-2xl mx-auto mb-10">
+                <span class="text-sky-400 text-xs font-bold uppercase">الجدول الميداني</span>
+                <h2 class="text-2xl md:text-3xl font-black text-white mt-1 mb-3">أوقات التدريب العملي في الورش والمختبرات</h2>
+                <p class="text-slate-400 text-xs">تنظيم دقيق لمواعيد استخدام الورش لضمان استفادة كاملة لجميع طلاب الصفوف.</p>
+            </div>
+            <div class="glass-card rounded-2xl overflow-hidden border border-slate-800">
+                <div class="overflow-x-auto">
+                    <table class="w-full text-right text-xs">
+                        <thead class="bg-slate-950 text-slate-400 border-b border-slate-800">
+                            <tr>
+                                <th class="p-3">اليوم</th>
+                                <th class="p-3">التخصص المهني</th>
+                                <th class="p-3">المكان (الورشة / المختبر)</th>
+                                <th class="p-3">المعلم المسؤول</th>
+                                <th class="p-3">الفترة الزمنية</th>
+                            </tr>
+                        </thead>
+                        <tbody class="divide-y divide-slate-800/60 text-slate-300">
+                            <tr>
+                                <td class="p-3 font-bold text-amber-400">الأحد / الثلاثاء</td>
+                                <td class="p-3">تكنولوجيا المعلومات (IT)</td>
+                                <td class="p-3">مختبر الحاسوب الرئيسي</td>
+                                <td class="p-3">أ. أمجد حمودة & أ. شهاب الصانوري</td>
+                                <td class="p-3">الصباحية والمساوية</td>
+                            </tr>
+                            <tr>
+                                <td class="p-3 font-bold text-amber-400">الإثنين / الأربعاء</td>
+                                <td class="p-3">الهندسة وتكنولوجيا المركبات</td>
+                                <td class="p-3">ورشة كهرباء السيارات الحديثة</td>
+                                <td class="p-3">أ. علاء عزام & أ. دولت</td>
+                                <td class="p-3">حسب جدول الورش</td>
+                            </tr>
+                            <tr>
+                                <td class="p-3 font-bold text-amber-400">الثلاثاء / الخميس</td>
+                                <td class="p-3">الفندقة والضيافة</td>
+                                <td class="p-3">مطبخ التدريب الفندقي</td>
+                                <td class="p-3">أ. محمود الزيود</td>
+                                <td class="p-3">التدريب الميداني</td>
+                            </tr>
+                            <tr>
+                                <td class="p-3 font-bold text-amber-400">الأربعاء</td>
+                                <td class="p-3">البناء والإنشاءات</td>
+                                <td class="p-3">ورشة الرسم الهندسي والإنشاءات</td>
+                                <td class="p-3">أ. طارق خلايلة</td>
+                                <td class="p-3">الدوام العملي</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </section>
 
-<section class="section">
+    <!-- BTEC Grade Calculator -->
+    <section id="calculator" class="py-14 px-4 border-b border-slate-800" data-aos="fade-up">
+        <div class="max-w-4xl mx-auto glass-card p-8 rounded-3xl border border-amber-500/30">
+            <div class="text-center mb-8">
+                <span class="bg-amber-500/20 text-amber-400 text-xs font-bold px-3 py-1 rounded-full border border-amber-500/30">حاسبة معتمدة</span>
+                <h2 class="text-2xl md:text-3xl font-extrabold text-white mt-2">حاسبة معدل التوجيهي BTEC المخصصة</h2>
+                <p class="text-xs text-slate-400 mt-1">أدخل علاماتك الأصلية (من 100) لكل بند ليتم احتساب الأوزان الرسمية بدقة (السنة الأولى 35% + السنة الثانية 35% + المشترك 30%)</p>
+            </div>
+            <div class="grid grid-cols-1 md:grid-cols-3 gap-6 mb-8">
+                <div>
+                    <label class="block text-xs font-bold text-amber-400 mb-2"><i class="fa-solid fa-graduation-cap"></i> علامة السنة الأولى (أول ثانوي) [35%]</label>
+                    <input type="number" id="calc-g11" max="100" min="0" placeholder="أدخل العلامة من 100" class="w-full bg-slate-950 border border-slate-700 rounded-xl px-4 py-2.5 text-white text-sm focus:border-amber-500 outline-none">
+                    <span class="text-[10px] text-slate-400 mt-1 block">تساهم بـ 35% من المعدل النهائي</span>
+                </div>
+                <div>
+                    <label class="block text-xs font-bold text-orange-400 mb-2"><i class="fa-solid fa-award"></i> علامة السنة الثانية (التوجيهي) [35%]</label>
+                    <input type="number" id="calc-g12" max="100" min="0" placeholder="أدخل العلامة من 100" class="w-full bg-slate-950 border border-slate-700 rounded-xl px-4 py-2.5 text-white text-sm focus:border-amber-500 outline-none">
+                    <span class="text-[10px] text-slate-400 mt-1 block">تساهم بـ 35% من المعدل النهائي</span>
+                </div>
+                <div>
+                    <label class="block text-xs font-bold text-sky-400 mb-2"><i class="fa-solid fa-book"></i> علامة المواد المشتركة [30%]</label>
+                    <input type="number" id="calc-common" max="100" min="0" placeholder="أدخل العلامة من 100" class="w-full bg-slate-950 border border-slate-700 rounded-xl px-4 py-2.5 text-white text-sm focus:border-amber-500 outline-none">
+                    <span class="text-[10px] text-slate-400 mt-1 block">تساهم بـ 30% من المعدل النهائي</span>
+                </div>
+            </div>
+            <button onclick="calculateBtecGrade()" class="w-full bg-gradient-to-r from-orange-500 to-amber-500 hover:from-orange-600 text-white font-extrabold py-3 rounded-xl transition text-sm shadow-lg mb-6">
+                احسب المعدل النهـائي بدقة
+            </button>
+            <div id="calc-result" class="hidden p-6 bg-slate-950 rounded-2xl border border-amber-500/40 text-center">
+                <span class="text-xs text-slate-400 block mb-1">المعدل التقديري النهائي بالتوجيهي:</span>
+                <span id="calc-final-score" class="text-4xl font-black text-amber-400">0.0%</span>
+                <p id="calc-note" class="text-xs text-slate-300 mt-2"></p>
+            </div>
+        </div>
+    </section>
 
-    <div class="section-title">
+    <!-- Success Stories -->
+    <section id="success-stories" class="py-14 px-4 bg-slate-900/40 border-b border-slate-800" data-aos="fade-up">
+        <div class="max-w-7xl mx-auto">
+            <div class="text-center max-w-2xl mx-auto mb-10">
+                <span class="text-amber-400 text-xs font-bold uppercase">قصص النجاح والإبداع</span>
+                <h2 class="text-2xl md:text-3xl font-black text-white mt-1 mb-3">إنجازات طلابنا في الورش والمختبرات</h2>
+                <p class="text-slate-400 text-xs">نماذج حية ومضيئة من مهارات طلاب مدرسة الرصيفة المهنية التطبيقية.</p>
+            </div>
+            <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
+                <div class="glass-card p-6 rounded-2xl border border-slate-800" data-aos="fade-up" data-aos-delay="100">
+                    <span class="bg-amber-500/20 text-amber-400 text-[10px] font-bold px-2.5 py-1 rounded-full">تكنولوجيا المعلومات</span>
+                    <h3 class="font-bold text-white text-base mt-3 mb-2">ابتكار نظام حماية ذكي للمختبرات</h3>
+                    <p class="text-xs text-slate-300 leading-relaxed">نجح فريق من طلاب تكنولوجيا المعلومات في تصميم نظام أمني مصغر لحماية أجهزة المختبر باستخدام لغات البرمجة الحديثة وتحكم الحساسات.</p>
+                </div>
+                <div class="glass-card p-6 rounded-2xl border border-slate-800" data-aos="fade-up" data-aos-delay="200">
+                    <span class="bg-amber-500/20 text-amber-400 text-[10px] font-bold px-2.5 py-1 rounded-full">هندسة المركبات</span>
+                    <h3 class="font-bold text-white text-base mt-3 mb-2">صيانة وإعادة تأهيل مركبة هجينة</h3>
+                    <p class="text-xs text-slate-300 leading-relaxed">أتم طلاب ورشة المركبات تدريباً عملياً متقدماً في فحص بطاريات السيارات الهجينة وصيانتها تحت إشراف مهندسي ورشة المدرسة بكفاءة عالية.</p>
+                </div>
+                <div class="glass-card p-6 rounded-2xl border border-slate-800" data-aos="fade-up" data-aos-delay="300">
+                    <span class="bg-amber-500/20 text-amber-400 text-[10px] font-bold px-2.5 py-1 rounded-full">الفندقة والضيافة</span>
+                    <h3 class="font-bold text-white text-base mt-3 mb-2">معرض المأكولات التراثية والعالمية</h3>
+                    <p class="text-xs text-slate-300 leading-relaxed">قدم قسم الفندقة عرضاً تطبيقياً متكاملاً لإعداد الأطباق الفندقية وإدارة الخدمة بأعلى معايير الجودة العالمية المعتمدة في نظام BTEC.</p>
+                </div>
+            </div>
+        </div>
+    </section>
 
-        <h1>مرحبا بكم</h1>
+    <!-- Teachers and Administration -->
+    <section id="teachers" class="py-14 px-4 border-b border-slate-800" data-aos="fade-up">
+        <div class="max-w-7xl mx-auto">
+            <div class="text-center max-w-3xl mx-auto mb-12">
+                <span class="text-sky-400 text-xs font-bold uppercase">الهيئة الإدارية والتدريسية</span>
+                <h2 class="text-3xl font-black text-white mt-2 mb-3">إدارة المدرسة ومعلمو التخصصات</h2>
+            </div>
+            <div class="glass-card p-6 md:p-8 rounded-3xl border border-amber-500/40 mb-12 max-w-3xl mx-auto glow-orange" data-aos="zoom-in">
+                <div class="flex flex-col md:flex-row items-center gap-6 text-center md:text-right">
+                    <div class="w-20 h-20 rounded-2xl bg-gradient-to-br from-amber-500 to-orange-600 flex items-center justify-center text-white text-2xl font-black shadow-lg shrink-0">
+                        <i class="fa-solid fa-user-tie"></i>
+                    </div>
+                    <div>
+                        <span class="bg-amber-500/20 text-amber-400 text-xs font-bold px-3 py-1 rounded-full border border-amber-500/30">مدير المدرسة</span>
+                        <h3 class="text-2xl font-black text-white mt-2">المهندس مهند الخطيب</h3>
+                        <p class="text-xs text-slate-300 leading-relaxed mt-2">
+                            "نسعى في مدرسة الرصيفة المهنية لتوفير أعلى مستويات التدريب التقني والهندسي لأبنائنا الطلبة لتأهيلهم لسوق العمل والتعليم الجامعي بكفاءة واقتدار."
+                        </p>
+                    </div>
+                </div>
+            </div>
+            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+                <div class="glass-card p-5 rounded-2xl border border-slate-800" data-aos="fade-up" data-aos-delay="100">
+                    <div class="flex items-center gap-4">
+                        <div class="w-12 h-12 rounded-xl bg-sky-500/20 text-sky-400 flex items-center justify-center font-bold text-lg"><i class="fa-solid fa-chalkboard-user"></i></div>
+                        <div>
+                            <h4 class="font-bold text-white text-base">الأستاذ أمجد حمودة</h4>
+                            <p class="text-xs text-sky-400 font-semibold">تكنولوجيا المعلومات (IT)</p>
+                            <span class="text-[10px] text-slate-400">التوجيهي BTEC والأول ثانوي</span>
+                        </div>
+                    </div>
+                </div>
+                <div class="glass-card p-5 rounded-2xl border border-slate-800" data-aos="fade-up" data-aos-delay="150">
+                    <div class="flex items-center gap-4">
+                        <div class="w-12 h-12 rounded-xl bg-sky-500/20 text-sky-400 flex items-center justify-center font-bold text-lg"><i class="fa-solid fa-chalkboard-user"></i></div>
+                        <div>
+                            <h4 class="font-bold text-white text-base">الأستاذ أسامة صوان</h4>
+                            <p class="text-xs text-sky-400 font-semibold">تكنولوجيا المعلومات (IT)</p>
+                            <span class="text-[10px] text-slate-400">الصف الأول ثانوي BTEC</span>
+                        </div>
+                    </div>
+                </div>
+                <div class="glass-card p-5 rounded-2xl border border-slate-800" data-aos="fade-up" data-aos-delay="200">
+                    <div class="flex items-center gap-4">
+                        <div class="w-12 h-12 rounded-xl bg-sky-500/20 text-sky-400 flex items-center justify-center font-bold text-lg"><i class="fa-solid fa-chalkboard-user"></i></div>
+                        <div>
+                            <h4 class="font-bold text-white text-base">الأستاذ شهاب الصانوري</h4>
+                            <p class="text-xs text-sky-400 font-semibold">تكنولوجيا المعلومات (IT)</p>
+                            <span class="text-[10px] text-slate-400">العاشر والأول ثانوي</span>
+                        </div>
+                    </div>
+                </div>
+                <div class="glass-card p-5 rounded-2xl border border-slate-800" data-aos="fade-up" data-aos-delay="250">
+                    <div class="flex items-center gap-4">
+                        <div class="w-12 h-12 rounded-xl bg-sky-500/20 text-sky-400 flex items-center justify-center font-bold text-lg"><i class="fa-solid fa-chalkboard-user"></i></div>
+                        <div>
+                            <h4 class="font-bold text-white text-base">الأستاذ عامر أبو تقصيرة</h4>
+                            <p class="text-xs text-sky-400 font-semibold">تكنولوجيا المعلومات (IT)</p>
+                            <span class="text-[10px] text-slate-400">العاشر والأول ثانوي</span>
+                        </div>
+                    </div>
+                </div>
+                <div class="glass-card p-5 rounded-2xl border border-slate-800" data-aos="fade-up" data-aos-delay="300">
+                    <div class="flex items-center gap-4">
+                        <div class="w-12 h-12 rounded-xl bg-amber-500/20 text-amber-400 flex items-center justify-center font-bold text-lg"><i class="fa-solid fa-wrench"></i></div>
+                        <div>
+                            <h4 class="font-bold text-white text-base">الأستاذ علاء عزام</h4>
+                            <p class="text-xs text-amber-400 font-semibold">الهندسة وتكنولوجيا المركبات</p>
+                            <span class="text-[10px] text-slate-400">تخصص كهرباء السيارات والمركبات</span>
+                        </div>
+                    </div>
+                </div>
+                <div class="glass-card p-5 rounded-2xl border border-slate-800" data-aos="fade-up" data-aos-delay="350">
+                    <div class="flex items-center gap-4">
+                        <div class="w-12 h-12 rounded-xl bg-amber-500/20 text-amber-400 flex items-center justify-center font-bold text-lg"><i class="fa-solid fa-wrench"></i></div>
+                        <div>
+                            <h4 class="font-bold text-white text-base">الأستاذ دولت</h4>
+                            <p class="text-xs text-amber-400 font-semibold">ورش الهندسة والمركبات</p>
+                            <span class="text-[10px] text-slate-400">التدريب العملي والصيانة</span>
+                        </div>
+                    </div>
+                </div>
+                <div class="glass-card p-5 rounded-2xl border border-slate-800" data-aos="fade-up" data-aos-delay="400">
+                    <div class="flex items-center gap-4">
+                        <div class="w-12 h-12 rounded-xl bg-emerald-500/20 text-emerald-400 flex items-center justify-center font-bold text-lg"><i class="fa-solid fa-utensils"></i></div>
+                        <div>
+                            <h4 class="font-bold text-white text-base">الأستاذ محمود الزيود</h4>
+                            <p class="text-xs text-emerald-400 font-semibold">الفندقة والضيافة</p>
+                            <span class="text-[10px] text-slate-400">إنتاج الطعام والخدمات</span>
+                        </div>
+                    </div>
+                </div>
+                <div class="glass-card p-5 rounded-2xl border border-slate-800" data-aos="fade-up" data-aos-delay="450">
+                    <div class="flex items-center gap-4">
+                        <div class="w-12 h-12 rounded-xl bg-orange-500/20 text-orange-400 flex items-center justify-center font-bold text-lg"><i class="fa-solid fa-building"></i></div>
+                        <div>
+                            <h4 class="font-bold text-white text-base">الأستاذ طارق خلايلة</h4>
+                            <p class="text-xs text-orange-400 font-semibold">البناء والإنشاءات</p>
+                            <span class="text-[10px] text-slate-400">الرسم الهندسي ومراقبة المواقع</span>
+                        </div>
+                    </div>
+                </div>
+                <div class="glass-card p-5 rounded-2xl border border-slate-800" data-aos="fade-up" data-aos-delay="500">
+                    <div class="flex items-center gap-4">
+                        <div class="w-12 h-12 rounded-xl bg-purple-500/20 text-purple-400 flex items-center justify-center font-bold text-lg"><i class="fa-solid fa-compass"></i></div>
+                        <div>
+                            <h4 class="font-bold text-white text-base">الأستاذ حسن الدعجة</h4>
+                            <p class="text-xs text-purple-400 font-semibold">السياحة والسفر</p>
+                            <span class="text-[10px] text-slate-400">إدارة البرامج والحجوزات</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
 
-        <p>
-            تعرف على أهم ما تقدمه المدرسة
-        </p>
+    <!-- Contact & Suggestions Box -->
+    <section id="contact" class="py-14 px-4 bg-slate-900/40" data-aos="fade-up">
+        <div class="max-w-7xl mx-auto grid grid-cols-1 lg:grid-cols-2 gap-10">
+            <div>
+                <span class="text-amber-400 text-xs font-bold uppercase">العنوان والتواصل</span>
+                <h2 class="text-3xl font-black text-white mt-2 mb-6">تواصل مع إدارة المدرسة</h2>
+                <div class="space-y-4 mb-8">
+                    <div class="glass-card p-4 rounded-xl border border-slate-800 flex items-center gap-4">
+                        <div class="w-10 h-10 rounded-lg bg-amber-500/10 text-amber-400 flex items-center justify-center shrink-0"><i class="fa-solid fa-location-dot"></i></div>
+                        <div>
+                            <h5 class="text-xs font-bold text-slate-400">العنوان الرسمي:</h5>
+                            <p class="text-sm font-semibold text-white">شارع مستشفى الرازي، الرصيفة، الأردن (13710)</p>
+                        </div>
+                    </div>
+                    <div class="glass-card p-4 rounded-xl border border-slate-800 flex items-center gap-4">
+                        <div class="w-10 h-10 rounded-lg bg-sky-500/10 text-sky-400 flex items-center justify-center shrink-0"><i class="fa-solid fa-envelope"></i></div>
+                        <div>
+                            <h5 class="text-xs font-bold text-slate-400">البريد الإلكتروني المعتمد:</h5>
+                            <p class="text-sm font-semibold text-white">mohammadjamiljaber2009@gmail.com</p>
+                        </div>
+                    </div>
+                </div>
+                <form onsubmit="event.preventDefault(); alert('تم استلام رسالتك بنجاح وسيتواصل معك الكادر الإداري.');" class="glass-card p-6 rounded-2xl border border-slate-800 space-y-4">
+                    <h4 class="font-bold text-white text-sm">استمارة التواصل السريع</h4>
+                    <div>
+                        <label class="block text-xs font-semibold text-slate-400 mb-1">الاسم الكامل</label>
+                        <input type="text" placeholder="أدخل اسمك الكريم" required class="w-full bg-slate-950 border border-slate-800 rounded-xl px-4 py-2.5 text-xs text-white outline-none focus:border-amber-500">
+                    </div>
+                    <div>
+                        <label class="block text-xs font-semibold text-slate-400 mb-1">البريد الإلكتروني</label>
+                        <input type="email" placeholder="example@domain.com" required class="w-full bg-slate-950 border border-slate-800 rounded-xl px-4 py-2.5 text-xs text-white outline-none focus:border-amber-500">
+                    </div>
+                    <div>
+                        <label class="block text-xs font-semibold text-slate-400 mb-1">موضوع الرسالة / الاستفسار</label>
+                        <textarea placeholder="اكتب استفسارك هنا حول التسجيل أو نظام BTEC..." rows="3" required class="w-full bg-slate-950 border border-slate-800 rounded-xl px-4 py-2.5 text-xs text-white outline-none focus:border-amber-500"></textarea>
+                    </div>
+                    <button type="submit" class="w-full bg-amber-500 hover:bg-amber-600 text-slate-950 font-bold py-2.5 rounded-xl text-xs transition">إرسال الرسالة الآن</button>
+                </form>
+            </div>
+            <!-- Suggestions Box -->
+            <div class="flex flex-col gap-6">
+                <form onsubmit="event.preventDefault(); alert('شكراً لك! تم إرسال مقترحك الموجه لإدارة المدرسة (م. مهند الخطيب) بنجاح.');" class="glass-card p-6 rounded-3xl border border-emerald-500/30 space-y-4">
+                    <span class="bg-emerald-500/20 text-emerald-400 text-[10px] font-bold px-2.5 py-1 rounded-full border border-emerald-500/30">زاوية الاقتراحات التطويرية</span>
+                    <h3 class="text-xl font-bold text-white">صندوق الشكاوي والمقترحات الموجه للإدارة</h3>
+                    <p class="text-xs text-slate-300 leading-relaxed">هل لديك اقتراح لتطوير الورش، أو استفسار خاص موجه لمدير المدرسة المهندس مهند الخطيب؟ شاركنا مقترحك بسرية تامة.</p>
+                    <div>
+                        <label class="block text-xs font-semibold text-slate-400 mb-1">نوع المشاركة</label>
+                        <select class="w-full bg-slate-950 border border-slate-800 rounded-xl px-3 py-2 text-xs text-white outline-none focus:border-emerald-500">
+                            <option>مقترح تطويري للورش والمختبرات</option>
+                            <option>استفسار أكاديمي حول BTEC</option>
+                            <option>ملحوظة أو شكوى إدارية</option>
+                        </select>
+                    </div>
+                    <div>
+                        <label class="block text-xs font-semibold text-slate-400 mb-1">نص الاقتراح أو الملحوظة</label>
+                        <textarea placeholder="اكتب تفاصيل مقترحك هنا..." rows="3" required class="w-full bg-slate-950 border border-slate-800 rounded-xl px-4 py-2.5 text-xs text-white outline-none focus:border-emerald-500"></textarea>
+                    </div>
+                    <button type="submit" class="w-full bg-emerald-500 hover:bg-emerald-600 text-slate-950 font-bold py-2.5 rounded-xl text-xs transition">إرسال المقترح للإدارة</button>
+                </form>
+                <div class="glass-card rounded-3xl overflow-hidden border border-slate-800 p-6 text-center flex-1 flex flex-col items-center justify-center">
+                    <i class="fa-solid fa-map-location-dot text-4xl text-amber-500 mb-3"></i>
+                    <h4 class="text-lg font-bold text-white mb-1">موقع المدرسة الجغرافي</h4>
+                    <p class="text-xs text-slate-400 mb-4">شارع مستشفى الرازي، لواء الرصيفة، الأردن.</p>
+                    <a href="https://maps.google.com/?q=Ruseifa,Jordan" target="_blank" class="bg-slate-800 hover:bg-slate-700 text-amber-400 border border-amber-500/30 px-5 py-2 rounded-xl text-xs font-bold transition">فتح خرائط جوجل</a>
+                </div>
+            </div>
+        </div>
+    </section>
 
+    <!-- Footer -->
+    <footer class="py-8 px-4 border-t border-slate-800 text-center text-xs text-slate-500">
+        <div class="max-w-7xl mx-auto flex flex-col md:flex-row items-center justify-between gap-4">
+            <p>© 2026 جميع الحقوق محفوظة - مدرسة الرصيفة الثانوية المهنية الشاملة للبنين</p>
+            <p class="text-amber-400 font-semibold">بإدارة المهندس مهند الخطيب</p>
+        </div>
+    </footer>
+
+    <!-- Floating AI Assistant -->
+    <div class="fixed bottom-6 left-6 z-50">
+        <button onclick="toggleAiChat()" class="animate-bounce-subtle bg-gradient-to-r from-amber-500 to-orange-500 text-slate-950 font-black p-4 rounded-full shadow-2xl flex items-center justify-center glow-orange border-2 border-white/20 hover:scale-110 transition">
+            <i class="fa-solid fa-robot text-2xl"></i>
+        </button>
+        <div id="ai-chat-window" class="hidden absolute bottom-16 left-0 w-80 sm:w-96 glass-card rounded-2xl border border-amber-500/40 shadow-2xl overflow-hidden flex flex-col h-96">
+            <div class="bg-gradient-to-r from-amber-500 to-orange-500 p-3 text-slate-950 flex items-center justify-between font-bold text-xs">
+                <div class="flex items-center gap-2"><i class="fa-solid fa-robot"></i><span>المساعد الذكي لمدرسة الرصيفة المهنية</span></div>
+                <button onclick="toggleAiChat()" class="text-slate-950 hover:text-white"><i class="fa-solid fa-xmark text-base"></i></button>
+            </div>
+            <div id="chat-messages" class="p-4 flex-1 overflow-y-auto space-y-3 text-xs">
+                <div class="bg-slate-800/80 p-3 rounded-xl border border-slate-700 text-slate-200">
+                    مرحباً بك! أنا المساعد الذكي لمدرسة الرصيفة المهنية. هل تحتاج مساعدة في رفع رابط مشروع، تحميل ملخصات، أو حساب المعدل؟
+                </div>
+            </div>
+            <div class="p-3 border-t border-slate-800 bg-slate-950 flex gap-2">
+                <input type="text" id="chat-input" placeholder="اسأل عن الورش، الموارد، أو BTEC..." onkeypress="if(event.key==='Enter') sendChatMessage()" class="flex-1 bg-slate-900 border border-slate-800 rounded-xl px-3 py-2 text-xs text-white outline-none focus:border-amber-500">
+                <button onclick="sendChatMessage()" class="bg-amber-500 text-slate-950 font-bold px-3 rounded-xl text-xs hover:bg-amber-600 transition"><i class="fa-solid fa-paper-plane"></i></button>
+            </div>
+        </div>
     </div>
 
+    <!-- AOS JS Library Initialization -->
+    <script src="https://unpkg.com/aos@2.3.1/dist/aos.js"></script>
+    <script>
+        AOS.init({
+            duration: 800,
+            once: true,
+            offset: 100
+        });
 
-    <div class="cards">
+        // Toggle Mobile Dropdown Menu with Arrow Animation
+        function toggleMobileMenu() {
+            const menu = document.getElementById('mobile-menu');
+            const icon = document.getElementById('menu-icon');
+            menu.classList.toggle('hidden');
+            if (!menu.classList.contains('hidden')) {
+                icon.style.transform = 'rotate(180deg)';
+            } else {
+                icon.style.transform = 'rotate(0deg)';
+            }
+        }
 
-        <div class="card">
-            <h3>بيئة تعليمية</h3>
+        // Cybersecurity Custom Cursor Movement
+        const cursorDot = document.getElementById('cursor-dot');
+        const cursorRing = document.getElementById('cursor-ring');
+        window.addEventListener('mousemove', (e) => {
+            const posX = e.clientX;
+            const posY = e.clientY;
+            cursorDot.style.left = `${posX}px`;
+            cursorDot.style.top = `${posY}px`;
+            cursorRing.style.left = `${posX}px`;
+            cursorRing.style.top = `${posY}px`;
+        });
 
-            <p>
-                توفير بيئة تعليمية مناسبة
-                تساعد الطلبة على التعلم والتطور.
-            </p>
+        function toggleAiChat() {
+            document.getElementById('ai-chat-window').classList.toggle('hidden');
+        }
 
-        </div>
+        // Specializations Modal Content Database
+        const specDetails = {
+            it: {
+                title: "تكنولوجيا المعلومات (IT - BTEC)",
+                icon: "fa-laptop-code",
+                color: "text-sky-400",
+                desc: "يُعد هذا التخصص البوابة الرئيسية لعصر العصر الرقمي والبرمجة. يركز على التدريب العملي في مختبرات المدرسة لتطوير مهارات البرمجة، تصميم وتطوير المواقع، شبكات الحاسوب، ودعم نظم التشغيل وأمن المعلومات.",
+                modules: ["أساسيات أنظمة الحاسوب والشبكات", "برمجة وتطوير تطبيقات الويب", "قواعد البيانات وأمن المعلومات", "استكشاف أخطاء البرمجيات وإصلاحها"],
+                careers: ["مبرمج ومطور ويب ومطوّر تطبيقات", "فني دعم فني وشبكات حاسوب", "مسؤول أمن معلومات وتجارة إلكترونية", "إكمال التعليم الجامعي في تخصصات الحاسوب والبرمجيات"]
+            },
+            vehicles: {
+                title: "الهندسة وتكنولوجيا المركبات (BTEC)",
+                icon: "fa-car-battery",
+                color: "text-amber-400",
+                desc: "تخصص هندسي تطبيقي متقدم يغطي صيانة وفحص المركبات الحديثة والهجينة (Hybrid)، والسيارات الكهربائية، مع التركيز على تشخيص الأعطال بالأنظمة الإلكترونية والحواسيب المحمولة الخاصة بالسيارات.",
+                modules: ["مبادئ الهندسة الميكانيكية للسيارات", "أنظمة الكهرباء والإلكترونيات بالمركبات", "فحص وصيانة بطاريات وأنظمة المركبات الهجينة", "صيانة أنظمة الفرامل والتعليق الحديثة"],
+                careers: ["فني تشخيص وإصلاح أعطال السيارات الحديثة", "مهندس ورشة صيانة مركبات هجينة", "افتتاح مركز فحص وصيانة متقدم", "استكمال الدراسة الجامعية في الهندسة الميكانيكية أو الميكاترونكس"]
+            },
+            construction: {
+                title: "البناء والإنشاءات (BTEC)",
+                icon: "fa-helmet-safety",
+                color: "text-orange-400",
+                desc: "يأخذ هذا التخصص الطالب في رحلة شاملة لتعلم أصول الهندسة المدنية والمعمارية، الرسم الهندسي باستخدام برمجيات الحاسوب، مسح الأراضي، حساب الكميات، ومراقبة جودة مواد البناء في المواقع.",
+                modules: ["الرسم الهندسي والمعماري (AutoCAD)", "مسح الأراضي ورفع المساحات", "حساب الكميات وتكاليف المشاريع الإنشائية", "مراقبة جودة تنفيذ الإنشاءات والسلامة العامة"],
+                careers: ["مساعد مهندس مدني / مراقب أبنية ومواقع", "فني مساح أراضي ومخططات هندسية", "مقدر تكاليف مشاريع إنشائية", "استكمال الدراسة في الهندسة المدنية أو العمارة"]
+            },
+            hospitality: {
+                title: "الفندقة والضيافة (BTEC)",
+                icon: "fa-utensils",
+                color: "text-emerald-400",
+                desc: "تخصص عالمي مطلوب بقوة في قطاع السياحة والفنادق. يتدرب الطالب عملياً في مطبخ المدرسة الفندقي على أصول الطهي العالمي، إدارة المطبخ، خدمات الطعام والشراب، وإدارة المكاتب الأمامية بالفنادق.",
+                modules: ["مهارات الطهي وإنتاج الوجبات الفندقية", "خدمات الطعام والشراب والمطاعم", "إدارة المكاتب الأمامية وخدمة الضيوف", "معايير النظافة والسلامة الغذائية العالمية (HACCP)"],
+                careers: ["طاهٍ محترف في الفنادق والمطاعم العالمية", "مسؤول خدمات طعام وشراب وموظف استقبال", "مشرف قطاع الضيافة والفنادق", "إكمال الدراسة الجامعية في الإدارة الفندقية والسياحية"]
+            },
+            tourism: {
+                title: "السياحة والسفر (BTEC)",
+                icon: "fa-plane-departure",
+                color: "text-purple-400",
+                desc: "يركز هذا التخصص على صناعة السياحة والسفر الحديثة، تشمل تخطيط البرامج السياحية، حزوزات الطيران وأنظمة الحجز الإلكترونية، الإرشاد السياحي، وتنظيم الفعاليات والمعارض وإدارة خدمة العملاء.",
+                modules: ["أساسيات صناعة السياحة والسفر", "أنظمة الحجوزات السياحية وتذاكر الطيران", "الإرشاد السياحي وخدمة الزوار", "التسويق السياحي وتنظيم الفعاليات"],
+                careers: ["موظف حجوزات طيران والسياحة والسفر", "مرشد سياحي ومنظم رحلات وفعاليات", "أخصائي خدمة عملاء سياحيين", "استكمال التعليم الجامعي في الإدارة السياحية"]
+            }
+        };
 
+        function openSpecializationModal(key) {
+            const data = specDetails[key];
+            if(!data) return;
+            let html = `
+                <div class="flex items-center gap-3 mb-4">
+                    <div class="w-12 h-12 rounded-2xl bg-slate-900 border border-slate-800 flex items-center justify-center text-2xl ${data.color}">
+                        <i class="fa-solid ${data.icon}"></i>
+                    </div>
+                    <div>
+                        <h3 class="text-lg md:text-xl font-black text-white">${data.title}</h3>
+                        <span class="text-xs text-amber-400 font-semibold">تخصص معتمد بنظام BTEC الدولي</span>
+                    </div>
+                </div>
+                <p class="text-slate-300 leading-relaxed text-xs md:text-sm mb-4">${data.desc}</p>
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-4 mt-4">
+                    <div class="bg-slate-950 p-4 rounded-2xl border border-slate-800">
+                        <h4 class="font-bold text-amber-400 mb-2 flex items-center gap-1.5"><i class="fa-solid fa-book-bookmark"></i> أبرز الوحدات والمادة الدراسية:</h4>
+                        <ul class="list-disc list-inside space-y-1 text-xs text-slate-300">
+                            ${data.modules.map(m => `<li>${m}</li>`).join('')}
+                        </ul>
+                    </div>
+                    <div class="bg-slate-950 p-4 rounded-2xl border border-slate-800">
+                        <h4 class="font-bold text-emerald-400 mb-2 flex items-center gap-1.5"><i class="fa-solid fa-briefcase"></i> فرص العمل والمسار الأكاديمي:</h4>
+                        <ul class="list-disc list-inside space-y-1 text-xs text-slate-300">
+                            ${data.careers.map(c => `<li>${c}</li>`).join('')}
+                        </ul>
+                    </div>
+                </div>
+            `;
+            document.getElementById('modal-content').innerHTML = html;
+            document.getElementById('spec-modal').classList.remove('hidden');
+        }
 
-        <div class="card">
-            <h3>التعليم المهني</h3>
+        function closeSpecializationModal() {
+            document.getElementById('spec-modal').classList.add('hidden');
+        }
 
-            <p>
-                الاهتمام بالتعليم المهني
-                وتنمية المهارات العملية.
-            </p>
+        // Portfolios Dynamic LocalStorage System
+        function loadPortfolios() {
+            const listContainer = document.getElementById('portfolios-list');
+            let portfolios = JSON.parse(localStorage.getItem('btec_portfolios')) || [
+                { name: "عمر خالد", spec: "تكنولوجيا المعلومات (IT)", title: "تطوير تطبيق ويب لإدارة الورش", link: "#" },
+                { name: "سيف الدين أحمد", spec: "الهندسة وتكنولوجيا المركبات", title: "فحص وإصلاح نظام الحقن الإلكتروني", link: "#" }
+            ];
+            listContainer.innerHTML = "";
+            portfolios.forEach((item, index) => {
+                listContainer.innerHTML += `
+                    <div class="bg-slate-950 p-3.5 rounded-xl border border-slate-800 flex flex-col sm:flex-row justify-between items-start sm:items-center gap-3">
+                        <div>
+                            <span class="text-amber-400 font-bold">${item.spec}</span>
+                            <h4 class="text-white font-semibold mt-0.5">${item.title}</h4>
+                            <span class="text-[10px] text-slate-400">الطالب: ${item.name}</span>
+                        </div>
+                        <div class="flex items-center gap-2">
+                            <a href="${item.link}" target="_blank" class="bg-sky-500/25 hover:bg-sky-500/35 text-sky-400 border border-sky-500/30 px-3 py-1.5 rounded-xl text-[11px] font-bold transition flex items-center gap-1.5">
+                                <i class="fa-solid fa-arrow-up-right-from-square"></i> استعراض
+                            </a>
+                            <button onclick="deletePortfolio(${index})" class="bg-red-500/20 hover:bg-red-500/30 text-red-400 border border-red-500/30 px-2.5 py-1.5 rounded-xl text-[11px] font-bold transition" title="حذف المشروع">
+                                <i class="fa-solid fa-trash-can"></i>
+                            </button>
+                        </div>
+                    </div>
+                `;
+            });
+        }
 
-        </div>
+        function submitPortfolio(event) {
+            event.preventDefault();
+            const name = document.getElementById('p-name').value.trim();
+            const spec = document.getElementById('p-spec').value;
+            const title = document.getElementById('p-title').value.trim();
+            const link = document.getElementById('p-link').value.trim();
+            let portfolios = JSON.parse(localStorage.getItem('btec_portfolios')) || [];
+            portfolios.unshift({ name, spec, title, link });
+            localStorage.setItem('btec_portfolios', JSON.stringify(portfolios));
+            document.getElementById('portfolio-form').reset();
+            loadPortfolios();
+            alert('تم إضافة مشروعك ونشره في السجل بنجاح!');
+        }
 
+        function deletePortfolio(index) {
+            if(confirm('هل أنت متأكد من حذف هذا المشروع من السجل؟')) {
+                let portfolios = JSON.parse(localStorage.getItem('btec_portfolios')) || [];
+                portfolios.splice(index, 1);
+                localStorage.setItem('btec_portfolios', JSON.stringify(portfolios));
+                loadPortfolios();
+            }
+        }
 
-        <div class="card">
-            <h3>الإبداع والتطوير</h3>
+        function calculateBtecGrade() {
+            const g11 = parseFloat(document.getElementById('calc-g11').value) || 0;
+            const g12 = parseFloat(document.getElementById('calc-g12').value) || 0;
+            const common = parseFloat(document.getElementById('calc-common').value) || 0;
+            if(g11 < 0 || g11 > 100 || g12 < 0 || g12 > 100 || common < 0 || common > 100) {
+                alert('يرجى إدخال علامات صحيحة بين 0 و 100 لكل بند');
+                return;
+            }
+            const total = (g11 * 0.35) + (g12 * 0.35) + (common * 0.30);
+            document.getElementById('calc-result').classList.remove('hidden');
+            document.getElementById('calc-final-score').innerText = total.toFixed(2) + '%';
+            document.getElementById('calc-note').innerText = `تم الحساب بدقة بناءً على: (السنة الأولى ${g11} × 35%) + (السنة الثانية ${g12} × 35%) + (المواد المشتركة ${common} × 30%)`;
+        }
 
-            <p>
-                تشجيع الطلبة على الإبداع
-                والمشاركة في المشاريع والأنشطة.
-            </p>
-
-        </div>
-
-    </div>
-
-</section>
-
-
-<footer>
-    © 2026 مدرسة الرصيفة المهنية الثانوية
-</footer>
-
+        function sendChatMessage() {
+            const input = document.getElementById('chat-input');
+            const messages = document.getElementById('chat-messages');
+            const query = input.value.trim();
+            if(!query) return;
+            messages.innerHTML += `<div class="bg-amber-500/20 text-amber-300 p-2.5 rounded-xl border border-amber-500/30 text-left font-semibold">${query}</div>`;
+            input.value = '';
+            let reply = "يمكنك تصفح أقسام الموقع بالأعلى مثل بنك الموارد، ملفات الإنجاز، أو جدول الورش!";
+            const q = query.toLowerCase();
+            if(q.includes('مدير') || q.includes('مهند')) {
+                reply = "مدير مدرسة الرصيفة الثانوية المهنية هو المهندس مهند الخطيب.";
+            } else if(q.includes('ملف') || q.includes('إنجاز') || q.includes('portfolio')) {
+                reply = "يمكنك إضافة رابط مشروعك في قسم 'ملفات إنجاز الطلاب الإلكترونية' ليظهر مباشرة للجميع.";
+            } else if(q.includes('مورد') || q.includes('ملخص') || q.includes('تحميل')) {
+                reply = "تستطيع تحميل كافة الملخصات والخطط من قسم 'بنك الموارد والملخصات'.";
+            } else if(q.includes('تخصص')) {
+                reply = "يمكنك الضغط على أي بطاقة تخصص في قسم التخصصات لتظهر لك نافذة مشروحة بكافة تفاصيلها!";
+            } else if(q.includes('معدل') || q.includes('حساب')) {
+                reply = "معدل BTEC يحسب كالتالي: 35% للسنة الأولى + 35% للسنة الثانية + 30% للمواد المشتركة.";
+            }
+            setTimeout(() => {
+                messages.innerHTML += `<div class="bg-slate-800/80 p-2.5 rounded-xl border border-slate-700 text-slate-200">${reply}</div>`;
+                messages.scrollTop = messages.scrollHeight;
+            }, 500);
+        }
+    </script>
 </body>
 </html>
